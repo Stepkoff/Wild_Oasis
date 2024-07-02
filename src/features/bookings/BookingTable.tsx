@@ -36,7 +36,7 @@ export const BookingTable = () => {
           )}
         />
         <Table.Footer>
-          <Pagination/>
+          <Pagination count={5}/>
         </Table.Footer>
       </Table>
     </Menus>
