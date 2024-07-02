@@ -4,6 +4,7 @@ import {Table} from "@/ui/Table.tsx";
 import {Empty} from "@/ui/Empty.tsx";
 import {useBookings} from "@/features/bookings/useBookings.ts";
 import {Spinner} from "@/ui/Spinner.tsx";
+import {Pagination} from "@/ui/Pagination.tsx";
 
 export const BookingTable = () => {
   const {bookings, isLoading} = useBookings();
@@ -34,6 +35,9 @@ export const BookingTable = () => {
             <BookingRow key={booking.id} booking={booking} />
           )}
         />
+        <Table.Footer>
+          <Pagination/>
+        </Table.Footer>
       </Table>
     </Menus>
   );

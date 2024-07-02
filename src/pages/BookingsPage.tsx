@@ -10,6 +10,7 @@ export const BookingsPage = () => {
         <BookingTableOperations/>
       </Row>
       <BookingTable/>
+
     </>
   );
 }
