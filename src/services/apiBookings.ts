@@ -1,8 +1,20 @@
 import { getToday } from "../utils/helpers.js";
 import supabase from "./supabase";
 
-type GetBookings = {filter: {field: string, value: string} | null, sortBy?: string}
-export const getBookings = async({filter, sortBy = 'created_at'}: GetBookings) => {
+// export type MethodSupabase = 'gte' | 'lte' | 'eq'
+
+type GetBookings = {
+  filter: {
+    field: string,
+    value: string | number,
+    // method: MethodSupabase
+  } | null,
+  sortBy: {
+    field: string,
+    direction: string,
+  }
+}
+export const getBookings = async({filter, sortBy}: GetBookings) => {
   // const {data, error} = await supabase
   //   .from('bookings')
   //   .select('*, cabins(*), guests(*)')
@@ -12,14 +24,25 @@ export const getBookings = async({filter, sortBy = 'created_at'}: GetBookings) =
   //   .eq(filter?.field, filter?.value)
   //   .lte('totalPrice', 5000)
   //   .gte('totalPrice', 5000)
+
   let query  = supabase
     .from('bookings')
     .select('*, cabins(cabinName), guests(fullName, email)')
-    .order(sortBy, {ascending: false})
+    // .order(sortBy.field, {ascending: false});
+
   // Filter
-  if(filter !== null) {
+  if(filter) {
     query = query.eq(filter.field, filter.value)
   }
+  // if(filter !== null) {
+  //   query = query[filter.method || 'eq'](filter.field, filter.value)
+  // }
+
+  // SORTING
+  if(sortBy) {
+    query = query.order(sortBy.field, {ascending: sortBy.direction === 'asc'})
+  }
+
   const {data, error} = await query
   if(error) {
     console.error(error);
