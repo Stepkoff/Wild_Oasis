@@ -1,5 +1,6 @@
 import { getToday } from "../utils/helpers.js";
 import supabase from "./supabase";
+import {PAGE_SIZE} from "@/utils/constants.ts";
 
 // export type MethodSupabase = 'gte' | 'lte' | 'eq'
 
@@ -12,9 +13,10 @@ type GetBookings = {
   sortBy: {
     field: string,
     direction: string,
-  }
+  },
+  currentPage: number
 }
-export const getBookings = async({filter, sortBy}: GetBookings) => {
+export const getBookings = async({filter, sortBy, currentPage}: GetBookings) => {
   // const {data, error} = await supabase
   //   .from('bookings')
   //   .select('*, cabins(*), guests(*)')
@@ -27,7 +29,7 @@ export const getBookings = async({filter, sortBy}: GetBookings) => {
 
   let query  = supabase
     .from('bookings')
-    .select('*, cabins(cabinName), guests(fullName, email)')
+    .select('*, cabins(cabinName), guests(fullName, email)', {count: 'exact'});
     // .order(sortBy.field, {ascending: false});
 
   // Filter
@@ -43,12 +45,21 @@ export const getBookings = async({filter, sortBy}: GetBookings) => {
     query = query.order(sortBy.field, {ascending: sortBy.direction === 'asc'})
   }
 
-  const {data, error} = await query
+  // PAGINATION
+  if(currentPage) {
+    const from = (currentPage - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1
+    query.range(from, to)
+  }
+
+  const {data, error, count} = await query
+
   if(error) {
     console.error(error);
     throw new Error('Bookings could not be leaded.')
   }
-  return data;
+
+  return {data, count};
 }
 
 export const getBooking = async (id: number) => {

@@ -7,7 +7,7 @@ import {Spinner} from "@/ui/Spinner.tsx";
 import {Pagination} from "@/ui/Pagination.tsx";
 
 export const BookingTable = () => {
-  const {bookings, isLoading} = useBookings();
+  const {bookings, isLoading, count} = useBookings();
 
   if(isLoading) return (
     <Spinner/>
@@ -32,11 +32,12 @@ export const BookingTable = () => {
         <Table.Body
           data={bookings}
           render={(booking) => (
-            <BookingRow key={booking.id} booking={booking} />
+            <BookingRow key={booking?.id} booking={booking} />
           )}
         />
         <Table.Footer>
-          <Pagination count={5}/>
+          {/*<Pagination count={bookings.length}/>*/}
+          <Pagination count={count ?? 0}/>
         </Table.Footer>
       </Table>
     </Menus>
