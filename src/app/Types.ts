@@ -48,7 +48,12 @@ export interface Booking {
   guestId: number
 }
 
-export interface BookingDataType extends Booking{
+export interface BookingsDataType extends Booking{
   cabins: Pick<Cabin, 'cabinName'>,
   guests: Pick<Guest, 'fullName' | 'email'>,
+}
+
+export interface BookingDataType extends Booking{
+  cabins: Cabin,
+  guests: Guest,
 }

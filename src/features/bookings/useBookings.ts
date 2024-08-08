@@ -1,6 +1,6 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getBookings} from "@/services/apiBookings.ts";
-import {BookingDataType} from "@/app/Types.ts";
+import {BookingsDataType} from "@/app/Types.ts";
 import {useSearchParams} from "react-router-dom";
 import {PAGE_SIZE} from "@/utils/constants.ts";
 
@@ -29,18 +29,31 @@ export const useBookings = () => {
     isLoading,
     error,
     data: { data: bookings, count } = {}
-  } = useQuery<{data: BookingDataType[], count: number | null}>({
+  } = useQuery<{data: BookingsDataType[], count: number | null }>({
     queryKey: ['bookings', filter, sortBy, currentPage],
     queryFn: () => getBookings({filter, sortBy, currentPage})
   })
 
   //PRE-FETCHING
-  if(count && (Math.ceil(count / PAGE_SIZE) > currentPage)) {
+
+  // eslint-disable-next-line
+  // @ts-ignore
+  const pageCount = Math.ceil(count / PAGE_SIZE)
+  if(currentPage < pageCount) {
     queryClient.prefetchQuery({
       queryKey: ['bookings', filter, sortBy, currentPage+1],
       queryFn: () => getBookings({filter, sortBy, currentPage: currentPage+1})
     })
   }
+  if(currentPage > 1) {
+    queryClient.prefetchQuery({
+      queryKey: ['bookings', filter, sortBy, currentPage - 1],
+      queryFn: () => getBookings({filter, sortBy, currentPage: currentPage - 1})
+    })
+  }
 
   return {isLoading, error, bookings, count}
 }
+
+
+

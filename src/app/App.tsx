@@ -12,6 +12,7 @@ import {AccountPage} from "@/pages/AccountPage.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {ToastContainer} from "react-toastify";
+import {BookingPage} from "@/pages/BookingPage.tsx";
 
 const GlobalLayout = () => {
   return (
@@ -41,6 +42,7 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route index element={<Navigate replace to={'/dashboard'} />} />
       <Route path={'dashboard'} element={<DashboardPage/>} />
       <Route path={'bookings'} element={<BookingsPage/>} />
+      <Route path={'bookings/:bookingId'} element={<BookingPage/>} />
       <Route path={'cabins'} element={<CabinsPage/>} />
       <Route path={'users'} element={<UsersPage/>} />
       <Route path={'settings'} element={<SettingsPage/>} />

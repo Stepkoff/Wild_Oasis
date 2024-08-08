@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BookingDataBox from "../../features/bookings/BookingDataBox";
+import BookingDataBox from "../bookings/BookingDataBox.js";
 
 import Row from "../../ui/Row";
 import Heading from "../../ui/Heading.js";
@@ -7,7 +7,7 @@ import ButtonGroup from "../../ui/ButtonGroup.js";
 import Button from "../../ui/Button.tsx";
 import ButtonText from "../../ui/ButtonText.js";
 
-import { useMoveBack } from "../../hooks/useMoveBack.js";
+import { useMoveBack } from "@/hooks/useMoveBack.js";
 
 const Box = styled.div`
   /* Box */

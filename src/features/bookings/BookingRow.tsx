@@ -3,7 +3,10 @@ import { format, isToday } from "date-fns";
 import {Tag} from "@/ui/Tag.tsx";
 import {Table} from "@/ui/Table.tsx";
 import {formatCurrency, formatDistanceFromNow} from "@/utils/helpers.ts";
-import {BookingDataType} from "@/app/Types.ts";
+import {BookingsDataType} from "@/app/Types.ts";
+import {Menus} from "@/ui/Menus.tsx";
+import {HiEye} from "react-icons/hi";
+import {useNavigate} from 'react-router-dom'
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -44,11 +47,13 @@ export const BookingRow = ({
     endDate,
     numNights,
     totalPrice,
+    id,
     status,
     guests: { fullName: guestName, email },
     cabins: { cabinName: cabinName },
   },
-}: {booking: BookingDataType}) => {
+}: {booking: BookingsDataType}) => {
+  const navigate = useNavigate();
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
@@ -70,10 +75,19 @@ export const BookingRow = ({
           {format(new Date(endDate), "MMM dd yyyy")}
         </span>
       </Stacked>
-
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
-
       <Amount>{formatCurrency(totalPrice)}</Amount>
+
+      <Menus.Menu>
+        <Menus.Toggle id={id}/>
+        <Menus.List id={id}>
+          <Menus.Button onClick={
+            () => {
+              navigate(`/bookings/${id}`)
+            }
+          } icon={<HiEye/>}>See details</Menus.Button>
+        </Menus.List>
+      </Menus.Menu>
     </Table.Row>
   );
 }
