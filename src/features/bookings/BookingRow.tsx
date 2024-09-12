@@ -7,6 +7,7 @@ import {BookingsDataType} from "@/app/Types.ts";
 import {Menus} from "@/ui/Menus.tsx";
 import {HiEye} from "react-icons/hi";
 import {useNavigate} from 'react-router-dom'
+import {HiArrowDownOnSquare} from "react-icons/hi2";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -81,11 +82,16 @@ export const BookingRow = ({
       <Menus.Menu>
         <Menus.Toggle id={id}/>
         <Menus.List id={id}>
-          <Menus.Button onClick={
-            () => {
-              navigate(`/bookings/${id}`)
-            }
-          } icon={<HiEye/>}>See details</Menus.Button>
+          <Menus.Button onClick={() => {navigate(`/bookings/${id}`)}} icon={<HiEye/>}>
+            See details
+          </Menus.Button>
+          {
+            status === 'unconfirmed' && (
+              <Menus.Button onClick={() => {navigate(`/checkin/${id}`)}} icon={<HiArrowDownOnSquare/>}>
+                Check in
+              </Menus.Button>
+            )
+          }
         </Menus.List>
       </Menus.Menu>
     </Table.Row>

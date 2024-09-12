@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BookingDataBox from "./BookingDataBox";
+import {BookingDataBox} from "./BookingDataBox";
 import {Row} from "../../ui/Row";
 import {Heading} from "../../ui/Heading.js";
 import {Tag} from "../../ui/Tag.js";
@@ -9,6 +9,7 @@ import {ButtonText} from "../../ui/ButtonText.js";
 import { useMoveBack } from "@/hooks/useMoveBack.ts";
 import {useBooking} from "@/features/bookings/useBooking.ts";
 import {Spinner} from "@/ui/Spinner.tsx";
+import {useNavigate} from "react-router-dom";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const HeadingGroup = styled.div`
 export const BookingDetail = () => {
   const {booking, isLoading} = useBooking();
   const moveBack = useMoveBack();
+  const navigate = useNavigate();
 
   if(isLoading) return <Spinner/>
 
@@ -41,6 +43,15 @@ export const BookingDetail = () => {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+
+        {
+          booking?.status === 'unconfirmed' && (
+            <Button onClick={() => {navigate(`/checkin/${booking?.id}`)}}>
+              Check in
+            </Button>
+          )
+        }
+
         <Button $variation="secondary" onClick={moveBack}>
           Back
         </Button>

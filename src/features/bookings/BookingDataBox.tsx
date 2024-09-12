@@ -103,29 +103,35 @@ const Footer = styled.footer`
 `;
 
 // A purely presentational component
-function BookingDataBox({ booking }: {booking?: BookingDataType}) {
+export const BookingDataBox = ({ booking }: {booking?: BookingDataType}) => {
+
   return (
     <StyledBookingDataBox>
       <Header>
         <div>
-          <HiOutlineHomeModern />
+          <HiOutlineHomeModern/>
           <p>
             {booking?.numNights} nights in Cabin <span>{booking?.cabins.cabinName}</span>
           </p>
         </div>
 
-        <p>
-          {format(new Date(booking?.startDate ?? 0), "EEE, MMM dd yyyy")} (
-          {isToday(new Date(booking?.startDate ?? 0))
-            ? "Today"
-            : formatDistanceFromNow(booking?.startDate ?? '')}
-          ) &mdash; {format(new Date(booking?.endDate ?? 0), "EEE, MMM dd yyyy")}
-        </p>
+        {
+          booking?.startDate && booking?.endDate && (
+            <p>
+              {format(new Date(booking?.startDate ?? ''), "EEE, MMM dd yyyy")} (
+              {isToday(new Date(booking?.startDate ?? ''))
+                ? "Today"
+                : formatDistanceFromNow(booking?.startDate ?? '')}
+              ) &mdash; {format(new Date(booking?.endDate ?? ''), "EEE, MMM dd yyyy")}
+            </p>
+          )
+        }
       </Header>
 
       <Section>
         <Guest>
-          {booking?.guests?.countryFlag && <Flag src={booking.guests.countryFlag} alt={`Flag of ${booking.guests.nationality}`} />}
+          {booking?.guests?.countryFlag &&
+            <Flag src={booking.guests.countryFlag} alt={`Flag of ${booking.guests.nationality}`}/>}
           {booking && (
             <p>
               {booking.guests.fullName} {booking.numGuests > 1 ? `+ ${booking.numGuests - 1} guests` : ""}
